@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: file-directories-generator
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/sinamna/gitops-learning.git
+      revision: main
+      files:
+      - path: apps/**/config/config.json
+
+  template:
+    metadata:
+      name: '{{app.name}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/sinamna/gitops-learning.git
+        targetRevision: main
+        path: '{{app.path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{app.namespace}}'
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
