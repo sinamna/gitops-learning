@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "nginxList",
+    "name": "nginx-file",
     "path": "apps/nginx",
     "source_type": "directoryOfManifests",
     "address": "https://kubernetes.default.svc",

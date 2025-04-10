@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "guestbookList",
+    "name": "guestbook-file",
     "path": "apps/guestbook",
     "source_type": "directoryOfManifests",
     "address": "https://kubernetes.default.svc",

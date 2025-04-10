@@ -10,7 +10,7 @@ spec:
       repoURL: https://github.com/sinamna/gitops-learning.git
       revision: main
       files:
-      - path: apps/**/config/config.json
+      - path: apps/**/config.json
   template:
     metadata:
       name: '{{app.name}}-application'
