@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: apps-of-apps
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: 6-apps-of-apps/masterapp
+    repoURL: https://github.com/sinamna/gitops-learning.git
+    targetRevision: main
