@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: team-alpha
+spec:
+  sourceRepos:
+    - https://github.com/team-alpha/*
+  destinations:
+    - namespace: team-alpha
+      server: https://kubernetes.default.svc
+
+# Only allows apps from https://github.com/team-alpha/*
+
+# Apps can only deploy to the team-alpha namespace in the local cluster

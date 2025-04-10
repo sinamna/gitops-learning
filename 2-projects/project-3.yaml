@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: production
+spec:
+  sourceRepos:
+    - https://github.com/company/prod-apps
+  destinations:
+    - namespace: prod
+      server: https://cluster-prod.company.com
+  syncWindows:
+    - kind: allow
+      schedule: "Mon-Fri 09:00-17:00"
+      duration: 8h
+      timeZone: "Asia/Tehran"
+      applications:
+        - "*"
+  roles:
+    - name: devops
+      description: Full access for DevOps team
+      policies:
+        - p, proj:production:devops, applications, *, production/*, allow
+      groups:
+        - devops-team
+# Only allows deployments during business hours
+
+# Grants DevOps team access to all apps in the project
+
+# Scoped to the production Git repo and cluster

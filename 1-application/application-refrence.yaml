@@ -1,0 +1,99 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-application          # Name of the application
+  namespace: argocd             # Namespace where the Application resource should be created
+spec:
+  project: default              # The project this application belongs to
+
+  # Source definition
+  source:
+    repoURL: https://github.com/example/my-repo.git  # Git repository URL
+    path: kubernetes/manifests                      # Path in the repository
+    targetRevision: HEAD                            # Branch, tag, or commit SHA
+    chart: my-chart                                # Helm chart name (if using Helm)
+    helm:                                          # Helm specific config
+      valueFiles:                                  # List of value files to use
+        - values.yaml
+        - values-production.yaml
+      values: |                                    # Inline values
+        image:
+          tag: v1.2.3
+      parameters:                                  # Helm parameters
+        - name: "image.tag"
+          value: "v1.2.3"
+      releaseName: my-release                     # Helm release name
+      version: 3.7.1                               # Helm chart version
+      passCredentials: false                       # Pass credentials to helm
+      ignoreMissingValueFiles: false               # Ignore missing value files
+      skipCrds: false                              # Skip CRD installation
+    kustomize:                                    # Kustomize specific config
+      namePrefix: prod-                           # Name prefix
+      nameSuffix: -v1                             # Name suffix
+      images:                                     # Kustomize image overrides
+        - my-image:v1.2.3
+      commonLabels:                               # Common labels to add
+        env: production
+      commonAnnotations:                          # Common annotations to add
+        commit: abc123
+      patches:                                    # Strategic merge patches
+        - patch: |-
+            - op: replace
+              path: /spec/replicas
+              value: 3
+          target:
+            kind: Deployment
+    directory:                                   # Directory specific config
+      recurse: true                              # Recurse into subdirectories
+      jsonnet:                                   # Jsonnet specific config
+        tlas:                                    # Top-level arguments
+          - name: env
+            value: production
+        extVars:                                 # External variables
+          - name: cluster
+            value: aws
+        libs:                                    # Additional library search dirs
+          - lib/
+      exclude: "*.txt"                           # Exclude pattern
+      include: "*.yaml"                          # Include pattern
+  
+  # Destination cluster and namespace
+  destination:
+    server: https://kubernetes.default.svc       # Kubernetes cluster URL
+    namespace: my-namespace                      # Target namespace
+    name: in-cluster                             # Cluster name (as configured in ArgoCD)
+  
+  # Sync policy
+  syncPolicy:
+    automated:                                   # Automated sync configuration
+      prune: true                               # Prune resources during sync
+      selfHeal: true                            # Automatically sync when state diverges
+      allowEmpty: false                         # Allow apps to have empty resources
+    syncOptions:                                # Sync options
+      - Validate=false                         # Skip validation
+      - CreateNamespace=true                   # Create namespace if not exists
+      - PruneLast=true                         # Prune after sync
+      - ApplyOutOfSyncOnly=true                # Only sync out-of-sync resources
+      - PrunePropagationPolicy=foreground      # Prune propagation policy
+      - Replace=true                           # Use replace instead of apply
+      - ServerSideApply=true                   # Use server-side apply
+    retry:                                      # Retry configuration
+      limit: 5                                  # Max number of retry attempts
+      backoff:                                  # Backoff settings
+        duration: 5s                           # Initial backoff duration
+        factor: 2                              # Backoff factor
+        maxDuration: 3m                       # Max backoff duration
+  
+  # Info items (displayed in UI)
+  info:
+    - name: Description
+      value: "Production deployment of my application"
+    - name: Owner
+      value: "DevOps Team"
+  
+  # Revision history limit
+  revisionHistoryLimit: 10
+  
+  # Resource tracking strategy
+  # Can be: annotation, label, annotation+label, or ""
+  resourceTrackingMethod: annotation+label

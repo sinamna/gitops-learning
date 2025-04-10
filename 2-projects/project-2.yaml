@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: multi-env
+spec:
+  sourceRepos:
+    - https://git.company.com/infrastructure/*
+  destinations:
+    - namespace: dev
+      server: https://cluster-dev.company.com
+    - namespace: staging
+      server: https://cluster-staging.company.com
+      
+# Apps can only be deployed to dev and staging namespaces on specific clusters
+
+# Good for environment separation

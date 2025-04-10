@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: application-with-auto-healing-sync
+spec:
+  destination:
+    namespace: auto-sync
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: application/directory
+    repoURL: https://github.com/sinamna/gitops-learning.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+
