@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: application-from-scratch
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+        releaseName: application-from-helm
+        valueFiles:
+          - custom-values.yaml
+        values: |
+          replicaCount: 3
+        valuesObject:
+          replicaCount: 5
+        parameters:
+          - name: "replicaCount"
+            value: "5"
+    path: application/directory
+    repoURL: https://github.com/sinamna/gitops-learning.git
+    targetRevision: main
