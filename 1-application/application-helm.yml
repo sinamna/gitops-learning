@@ -17,6 +17,6 @@ spec:
         parameters:
           - name: "replicaCount"
             value: "2"
-    path: application/helm/nginx
+    path: 1-application/helm/nginx
     repoURL: https://github.com/sinamna/gitops-learning.git
     targetRevision: main

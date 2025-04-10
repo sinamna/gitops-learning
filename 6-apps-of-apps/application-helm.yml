@@ -11,3 +11,6 @@ spec:
     path: 6-apps-of-apps/masterapp
     repoURL: https://github.com/sinamna/gitops-learning.git
     targetRevision: main
+  syncPolicy:
+    automated:
+      selfHeal: true
