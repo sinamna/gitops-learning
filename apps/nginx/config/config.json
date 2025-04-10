@@ -1,9 +1,9 @@
 {
-    "app": {
-      "name": "nginxList",
-      "path": "apps/nginx",
-      "source_type": "directoryOfManifests",
-      "address": "https://kubernetes.default.svc",
-      "namespace": "nginxns"
-    }
+  "app": {
+    "name": "nginxList",
+    "path": "apps/nginx",
+    "source_type": "directoryOfManifests",
+    "address": "https://kubernetes.default.svc",
+    "namespace": "nginxns"
   }
+}

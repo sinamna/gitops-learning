@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: git-directories-generator
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - name: nginx
+        path: apps/nginx
+        namespace: nginx-list-ns
+      - name: guestbook
+        path: apps/guestbook
+        namespace: guestbook-list-ns
+  template:
+    metadata:
+      name: '{{name}}-application'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/sinamna/gitops-learning.git
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true

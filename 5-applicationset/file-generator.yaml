@@ -10,10 +10,9 @@ spec:
       revision: main
       files:
       - path: apps/**/config/config.json
-
   template:
     metadata:
-      name: '{{app.name}}'
+      name: '{{app.name}}-application'
     spec:
       project: default
       source:
@@ -27,3 +26,33 @@ spec:
         automated: {}
         syncOptions:
           - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: files-generator
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/sinamna/gitops-learning.git
+      revision: main
+      files:
+      - path: apps/**/config/config.json
+  template:
+    metadata:
+      name: '{{app.name}}-application'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/devopshobbies/argocd-tutorial.git
+        targetRevision: main
+        path: '{{app.path}}'
+      destination:
+        server: '{{app.address}}'
+        namespace: '{{app.namespace}}'
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+
