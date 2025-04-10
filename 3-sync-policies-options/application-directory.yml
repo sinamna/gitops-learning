@@ -8,7 +8,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: application/directory
+    path: 1-application/directory
     repoURL: https://github.com/sinamna/gitops-learning.git
     targetRevision: main
   syncPolicy:

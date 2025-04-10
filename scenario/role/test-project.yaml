@@ -25,5 +25,5 @@ spec:
         - p, proj:test-project:test-role, applications, create, test-project/*, allow
         - p, proj:test-project:test-role, applications, update, test-project/*, allow
         - p, proj:test-project:test-role, applications, delete, test-project/*, allow
-      # groups:
-      #   - test-user
+      groups:
+        - test-user

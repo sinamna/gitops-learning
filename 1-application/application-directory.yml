@@ -4,7 +4,7 @@ metadata:
   name: application-directory
 spec:
   destination:
-    namespace: directory
+    namespace: argocd
     server: https://kubernetes.default.svc
   project: default
   source:
@@ -12,6 +12,6 @@ spec:
           #      exclude: 'service.yml'
           #      include: '{serviceaccount.yml,service.yml}'
           #      recurse: true
-    path: application/directory
+    path: 1-application/directory
     repoURL: https://github.com/sinamna/gitops-learning.git
     targetRevision: main
